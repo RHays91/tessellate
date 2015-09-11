@@ -15,22 +15,19 @@ login.controller('AuthController', function ($scope, $window, $location, $cookie
 
     //pass along username and token
     Auth.signInWithFB($cookies.get('facebookToken'));
-    // $location.path('/events');
  
   };
 });
 
-// angular.module('tessellate.authServices', ['ngCookies'])
 login.factory('Auth', function ($http, $location, $window){
 
-  var signInWithFB = function(token){
+  var signInWithFB = function(user){
     console.log('TOKEN');
 
-    token = JSON.parse(token);
-    console.log(token.facebookId);
-    $window.localStorage.setItem('facebookId', token.facebookId);
-    //console.dir(token)
-    // $location.path('/events');
+    user = JSON.parse(user);
+    console.log(user.facebookId);
+    $window.localStorage.setItem('facebookId', user.facebookId);
+    $window.localStorage.setItem('facebookToken', user.token);
 
   };
 
