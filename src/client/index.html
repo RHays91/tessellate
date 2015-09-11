@@ -3,17 +3,34 @@
 <head>
   <title>Tessellate</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/dropzone.min.js"></script>
+  <script src="./js/app.min.js"></script>
+  <script src='./js/main.js'></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-cookies.js"></script>
+  <script src='./js/authServices.js'></script>
+  <script src='./js/mosaicModule.js'></script>
+  <script src="https://use.typekit.net/col8pcn.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  <script>
+  if (window.location.hash == '#_=_'){
+      history.replaceState 
+          ? history.replaceState(null, null, window.location.href.split('#')[0])
+          : window.location.hash = '';
+  }
+  </script>
 </head>
-<body>
+<body ng-app="tessell">
   <header id="top" class="header">
     <div class="text-vertical-center">
       <img id="logo" src="./assets/tessellate_logo.png">
       <div>
-        <form action="/auth/facebook" method="GET">
-          <div>
-            <input type="image" src="./assets/fb_login_button_v2.png" alt="Submit">
+        <!-- <form action="/auth/facebook" method="GET"> -->
+          <div ng-controller="AuthController">
+            <a href="/auth/facebook">
+            <img ng-click = "signInWithFB()" class="facebookLogin" src="../assets/facebook.png" />
+            </a>
           </div>
-        </form>
+        <!-- </form> -->
       </div>
     </div>
   </header>

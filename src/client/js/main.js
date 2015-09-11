@@ -1,10 +1,15 @@
 var tess = angular.module("tessell", [
-  "ngRoute"
+  "ngRoute",
+  'ngCookies'
 ]);
 
 tess.config(["$routeProvider", function ($routeProvider){
     $routeProvider
       .when('/', {
+        templateUrl: '../index.html', 
+        controller: 'AuthController'
+      })
+      .when('/events', {
         templateUrl: '../events.html', 
         controller: 'eventsProfileController'
       })
@@ -157,4 +162,37 @@ tess.directive('dropzone', function () {
      dropzone.on(event, handler);
    });
  };
+});
+
+// angular.module('tessellate.AuthController', ['ngCookies'])
+
+tess.controller('AuthController', function ($scope, $window, $location, $cookies, Auth) {
+  $scope.signInWithFB = function(){
+    console.log('signing in');
+    var cookies = $cookies.get("facebookToken");
+
+    //pass along username and token
+    Auth.signInWithFB($cookies.get('facebookToken'));
+    // $location.path('/events');
+ 
+  };
+});
+
+// angular.module('tessellate.authServices', ['ngCookies'])
+tess.factory('Auth', function ($http, $location, $window){
+
+  var signInWithFB = function(token){
+    console.log('TOKEN');
+
+    token = JSON.parse(token);
+    console.log(token.facebookId);
+    $window.localStorage.setItem('facebookId', token.facebookId);
+    //console.dir(token)
+    // $location.path('/events');
+
+  };
+
+  return {
+    signInWithFB: signInWithFB
+  };
 });

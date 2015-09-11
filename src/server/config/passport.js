@@ -1,5 +1,5 @@
 var fbAuth            = require('./config.js').passport.facebook,
-    FacebookStrategy  = require('passport-facebook').Strategy;
+    FacebookStrategy  = require('passport-facebook').Strategy,
     User              = require('../db/db').User;
 
 module.exports = function(passport) {
