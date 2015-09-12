@@ -15,8 +15,8 @@ module.exports = {
     var facebookId;
     if (!!req.headers.facebookid){
       facebookId = req.headers.facebookid;
-    } else if (!!req.cookies.facebookToken){
-      facebookId = JSON.parse(req.cookies.facebookToken).facebookId;
+    } else {
+      facebookId = req.user.facebookId;
     }
     getEventsByUser(facebookId, function(user){
       if (!user){
@@ -118,7 +118,7 @@ module.exports = {
     if (!!req.headers.facebookid){
       facebookId = req.headers.facebookid;
     } else if (!!req.cookies.facebookToken){
-      facebookId = JSON.parse(req.cookies.facebookToken).facebookId;
+      facebookId = req.user.facebookId;
     }
 
     // console.log(eventCode + " is our event code...");
@@ -148,7 +148,7 @@ module.exports = {
     if (!!req.headers.facebookid){
       facebookId = req.headers.facebookid;
     } else if (!!req.cookies.facebookToken){
-      facebookId = JSON.parse(req.cookies.facebookToken).facebookId;
+      facebookId = req.user.facebookId;
     }
     joinEvent(facebookId, eventCode, function(){
       getEventAndMap(eventCode, function (obj){
