@@ -46,9 +46,6 @@ module.exports = function (app, passport) {
         });
       }
       console.log('USER??', req.user);
-      console.log('session set' + JSON.stringify(user))
-      // resp.cookie('facebookToken', JSON.stringify(user), { maxAge: 900000});
-      // resp.json({ state: req.isAuthenticated() });
       resp.redirect('/main.html');
       // resp.end();
 

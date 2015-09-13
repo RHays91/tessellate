@@ -33,7 +33,6 @@ module.exports = function (app, express) {
   }));
   app.use(passport.initialize());
   app.use(passport.session());
-
   app.use(express.static(__dirname + '/../public/'));
 
   var auth = function (req, res, next){

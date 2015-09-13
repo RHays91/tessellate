@@ -3,17 +3,19 @@
 <head>
   <title>Tessellate</title>
   <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/dropzone.min.js"></script>
   <script src="./js/app.min.js"></script>
-  <!--<script src='./js/login.js'></script>-->
-  <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-cookies.js"></script>-->
+  <script src='./js/main.js'></script>
+  <script src='./js/mosaicModule.js'></script>
+  <script src="https://use.typekit.net/col8pcn.js"></script>
 </head>
-<body>
+<body ng-app="tessell">
   <header id="top" class="header">
     <div class="text-vertical-center">
       <img id="logo" src="./assets/tessellate_logo.png">
       <div>
-          <div ng-controller="AuthController">
-            <a href="/auth/facebook">
+          <div ng-controller='loginController'>
+            <a href="/auth/facebook" target="_self">
             <img class="facebookLogin" src="./assets/fb_login_button_v2.png" />
             </a>
           </div>

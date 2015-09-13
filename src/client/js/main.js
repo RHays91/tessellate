@@ -3,25 +3,51 @@ var tess = angular.module("tessell", [
 ]);
 
 tess.config(["$routeProvider",'$httpProvider', function ($routeProvider, $httpProvider){
-    $routeProvider
-      .when('/', {
-        templateUrl: '../events.html', 
-        controller: 'eventsProfileController'
-      })
-      .when('/create', {
-        templateUrl: '../create.html', 
-        controller: 'eventsProfileController'
-      })
-      .when('/mosaic', {
-        templateUrl: '../mosaic.html',
-        controller: 'eventsProfileController'
-      });
-  }]);
-
-tess.run([ '$rootScope', '$location', function ($rootScope, $location){
+  $routeProvider
+    .when('/', {
+      templateUrl: '../index.html',
+      controller: 'loginController',
+      authenticate: false
+    })
+    .when('/main', {
+      templateUrl: '../main.html', 
+      controller: 'eventsProfileController',
+      authenticate: true
+    })
+    .when('/create', {
+      templateUrl: '../create.html', 
+      controller: 'eventsProfileController',
+      authenticate: true
+    })
+    .when('/mosaic', {
+      templateUrl: '../mosaic.html',
+      controller: 'eventsProfileController',
+      authenticate: true
+    })
+    .otherwise({
+      redirectTo: '/'
+    });
 }]);
 
-tess.factory('httpRequestFactory', [ '$http', function ($http){
+tess.run([ '$rootScope', '$location', '$http', function ($rootScope, $location, $http){
+  $rootScope.$on('$routeChangeStart', function (evt, next, current) {
+    if (next.templateUrl !== '../index.html'){
+      $http({
+        method: 'GET',
+        url: '/loggedin'
+      }).then(function(response){
+        if (response !== '0'){
+          console.log('isAuth TRUE');
+        } else {
+          console.log('UNAUTHORIZED...Redirecting');
+          $location.path('/login');
+        }
+      });
+    }
+  });
+}]);
+
+tess.factory('httpRequestFactory', [ '$http', '$location', '$q', function ($http, $location, $q){
   var httpRequestFactory = {};
   httpRequestFactory.getUserProfile = function(){
     return $http({
@@ -41,6 +67,18 @@ tess.factory('httpRequestFactory', [ '$http', function ($http){
       return response;
     });
   };
+
+  httpRequestFactory.logout = function(){
+    return $http({
+      method: 'GET',
+      url: '/logout'
+    }).then(function(response){
+      console.log("Logging Out");
+      $location.path('/login');
+      return response;
+    });
+  };
+
   return httpRequestFactory;
 }]);
 
@@ -76,6 +114,10 @@ tess.controller('eventsProfileController', [ '$scope', 'httpRequestFactory', '$l
   };
   $scope.goToExisitingEvent = function(eventCode){
     };
+
+  $scope.logout = function(){
+    httpRequestFactory.logout();
+  };
 
   $scope.dropzoneConfig = {
     'options': {
@@ -140,3 +182,36 @@ tess.directive('dropzone', function () {
    });
  };
 });
+
+tess.controller('loginController', ['$scope', 'loginFactory', function ($scope, loginFactory){
+  $scope.userFound = loginFactory.loginWithFacebook();
+  $scope.altLogin = function(){
+    loginFactory.altLogin();
+  };
+}]);
+
+tess.factory('loginFactory', ['$http', '$location', '$window', function ($http, $location, $window){
+  return {
+    loginWithFacebook: function(){
+      return $http({
+        method: 'GET',
+        url: '/loggedin'
+      }).then(function (res){
+        if (res.status !== '0'){
+          return true;
+          // console.log('YAY');
+          // $location.url('/create');
+        } else {
+          return false;
+          // console.log('BOO');
+          // $location.('/');
+        }
+      });
+    },
+
+    altLogin: function(){
+      $window.location = $window.location.protocol + "//" + $window.location.host + $window.location.pathname + "auth/facebook";
+    }
+        
+  };
+}]);

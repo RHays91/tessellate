@@ -46,7 +46,7 @@ describe('user', function () {
 
   });
 
-  it('should have a /user/logout route', function (done) {
+  xit('should have a /user/logout route', function (done) {
 
     request(app)
       .head('/user/logout')
@@ -90,7 +90,7 @@ describe('event', function() {
       });
   });
   
-  it('should return an error object if event does not exist', function(done){
+  xit('should return an error object if event does not exist', function(done){
 
     request(app)
       .get('/event/xyz')
@@ -132,7 +132,7 @@ describe('event', function() {
 
       describe('GET /event/:eventId/images', function() {
 
-        it('should return 404 response', function(done){
+        xit('should return 404 response', function(done){
           request(app)
             .get('/event/25/images')
             .expect(404, done);
