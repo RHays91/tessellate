@@ -18,9 +18,11 @@ module.exports = function (app, passport) {
   });
   // Logout of our app
   app.get('/logout', function (req, res){
-    req.session.destroy();
-    res.clearCookie('facebookToken');
-    res.redirect('/');
+    req.session.destroy(function (err) {
+      req.logout();
+      console.log('User after Logout:', req.user);
+      res.redirect('/index.html');
+    });
   });
 
   /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -45,7 +47,7 @@ module.exports = function (app, passport) {
       }
       console.log('USER??', req.user);
       console.log('session set' + JSON.stringify(user))
-      resp.cookie('facebookToken', JSON.stringify(user), { maxAge: 900000});
+      // resp.cookie('facebookToken', JSON.stringify(user), { maxAge: 900000});
       // resp.json({ state: req.isAuthenticated() });
       resp.redirect('/main.html');
       // resp.end();

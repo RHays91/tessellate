@@ -36,18 +36,25 @@ module.exports = function (app, express) {
 
   app.use(express.static(__dirname + '/../public/'));
 
+  var auth = function (req, res, next){
+    if (!req.isAuthenticated()){
+      res.redirect('/');
+    } else {
+      next();
+    }
+  };
   /**
    * route paths
    *
    * Using plural and singular - semantics are debatable, putting both in
    * 
    */
-  app.use('/event/:eventId/image', imageRouter);
-  app.use('/event/', eventRouter);
-  app.use('/event/:eventId/map', mapRouter);
-  app.use('/events/:eventId/images', imageRouter);
-  app.use('/events/', eventRouter);
-  app.use('/user', userRouter);
+  app.use('/event/:eventId/image', auth, imageRouter);
+  app.use('/event/', auth, eventRouter);
+  app.use('/event/:eventId/map', auth, mapRouter);
+  app.use('/events/:eventId/images', auth, imageRouter);
+  app.use('/events/', auth, eventRouter);
+  app.use('/user', auth, userRouter);
 
   //use error handling methods from helpers
   app.use(helpers.errorLogger);
