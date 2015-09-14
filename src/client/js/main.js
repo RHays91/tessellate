@@ -5,11 +5,10 @@ var tess = angular.module("tessell", [
 
 tess.config(["$routeProvider", '$locationProvider', '$facebookProvider', function ($routeProvider, $locationProvider, $facebookProvider){
     $routeProvider
-      .when('/login', {
-        templateUrl: '../index.html',
-        controller: 'eventsProfileController'
-      })
       .when('/', {
+        templateUrl: '../index.html'
+      })
+      .when('/main', {
         templateUrl: '../events.html', 
         controller: 'eventsProfileController'
       })
@@ -26,7 +25,7 @@ tess.config(["$routeProvider", '$locationProvider', '$facebookProvider', functio
        */
       // $locationProvider.html5Mode(true);
     $facebookProvider.setAppId('1532298576992512');
-    $facebookProvider.setPermissions('id','email', 'first_name', 'last_name', 'displayName', 'photos');
+    $facebookProvider.setPermissions('user_photos', 'user_friends');
     $facebookProvider.setCustomInit({
       status     : true,
       cookie     : true,
@@ -255,8 +254,9 @@ tess.controller('mosaicCtrl', ['$scope', 'mosaicFactory', 'httpRequestFactory', 
   };
 }]);
 
-tess.controller('eventsProfileController', [ '$scope', 'httpRequestFactory', '$location', 'FacebookServices', function ($scope, httpRequestFactory, $location, FacebookServices){
+tess.controller('eventsProfileController', [ '$scope', 'httpRequestFactory', '$location', 'FacebookServices', '$window', function ($scope, httpRequestFactory, $location, FacebookServices, $window){
   $scope.photoLoaded = false;
+  $scope.loggedIn = false;
 
   $scope.getUserProfile = function(){
     httpRequestFactory.getUserProfile()
@@ -302,7 +302,18 @@ tess.controller('eventsProfileController', [ '$scope', 'httpRequestFactory', '$l
     };
 
   $scope.loginWithFB = function(){
-    FacebookServices.login();
+    FacebookServices.login()
+      .then(function (res){
+        if (res.status === 'connected'){
+          $scope.loggedIn = true;
+          // FacebookServices.getFBInfo('/me', {})
+          //   .then(function (res){
+          //     console.log(res);
+
+          //   });
+          $location.url('/main');
+        }
+      });
   };
 
   $scope.dropzoneConfig = {
@@ -381,18 +392,16 @@ tess.directive('dropzone', function () {
  };
 });
 
-tess.factory('FacebookServices', ['$facebookProvider', function ($facebookProvider){
+tess.factory('FacebookServices', ['$facebook', function ($facebook){
   var services = {};
+
   services.login = function (){
-    $facebook.login();
-      // .success(function (data, status){
-      //   scope.isLoggedIn = true;
-      //   $location.path('/');
-      // })
-      // .error(function (data, status){
-      //   scope.isLoggedIn = false;
-      //   $location.path('/login');
-      // });
+    return $facebook.login();
   };
+
+  services.getFBInfo = function(path, fields){
+    return $facebook.api(path, fields);
+  };
+
   return services;
 }]);

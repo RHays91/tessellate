@@ -29,9 +29,12 @@ module.exports = function (app, express) {
 
   // set up sessions and initialize passport
   app.use(session({secret: app.config.sessionSecret }));
-  app.use(passport.initialize());
-  app.use(passport.session());
+  // app.use(passport.initialize());
+  // app.use(passport.session());
 
+  app.get('*', function(req, res) {
+    res.sendfile('../public/index.html'); // load our public/index.html file
+  });
   /**
    * route paths
    *
@@ -55,6 +58,6 @@ module.exports = function (app, express) {
   require('../modules/event/eventRoutes')(eventRouter);
   require('../modules/map/mapRoutes')(mapRouter);
   require('../modules/user/userRoutes')(userRouter);
-  require('../modules/auth/auth-routes')(app, passport);
+  // require('../modules/auth/auth-routes')(app, passport);
 
 };

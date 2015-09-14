@@ -30,13 +30,12 @@ module.exports = {
     // Look for image file on body (Mobile) or
     // req.file.path (Desktop)
     var imagePath;
-    if (!!req.file.path){
+    if (!!req.file){
       imagePath = req.file.path;
     } else {
-      imagePath = JSON.parse(req.body).image;
+      imagePath = req.body.image;
     }
 
-    console.log("inside imgaeController--->", req.file);
     cloudinary.uploader.upload(imagePath, function (result) { 
       guestImageMaker.analyzeGuestImage(req.params.eventId, facebookId, result, function (err, image){
         if (err){
