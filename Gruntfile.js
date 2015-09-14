@@ -91,6 +91,7 @@ module.exports = function(grunt) {
         src: [
         'node_modules/angular/angular.js',
         'node_modules/angular-route/angular-route.js',
+        'node_modules/ng-facebook/ngFacebook.js',
         'src/client/bower_components/ng-file-upload/ng-file-upload-all.min.js',
         // 'src/client/bower_components/dropzone/dist/dropzone.min.js',
         'src/client/bower_components/jquery/dist/jquery.js', 

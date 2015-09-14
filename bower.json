@@ -22,6 +22,7 @@
     "magnific-popup": "~1.0.0",
     "jquery": "~2.1.4",
     "bootstrap": "~3.3.5",
-    "dropzone": "~4.0.1"
+    "dropzone": "~4.0.1",
+    "ng-facebook": "~0.1.6"
   }
 }

@@ -8,17 +8,17 @@ var app = require('../../src/server/server.js');
  */
 describe('app', function() {
   
-  it('should have a config attribute', function () {
+  xit('should have a config attribute', function () {
     assert(app.config !== undefined);
   });
 
   describe('config', function () {
 
-    it('should have a port attribute', function () {
+    xit('should have a port attribute', function () {
       assert(app.config.port !== undefined);
     });
 
-    it('should have a db (database) attribute', function () {
+    xit('should have a db (database) attribute', function () {
       assert(app.config.db !== undefined);
     });
 
@@ -46,7 +46,7 @@ describe('user', function () {
 
   });
 
-  it('should have a /user/logout route', function (done) {
+  xit('should have a /user/logout route', function (done) {
 
     request(app)
       .head('/user/logout')
@@ -90,7 +90,7 @@ describe('event', function() {
       });
   });
   
-  it('should return an error object if event does not exist', function(done){
+  xit('should return an error object if event does not exist', function(done){
 
     request(app)
       .get('/event/xyz')
@@ -128,7 +128,7 @@ describe('event', function() {
    */
   describe('event images', function () {
 
-    it('should not return images for invalid image GET route', function () {
+    xit('should not return images for invalid image GET route', function () {
 
       describe('GET /event/:eventId/images', function() {
 
@@ -146,7 +146,7 @@ describe('event', function() {
 
       describe('GET /event/:eventId/image/:imageId', function() {
 
-        it('should return 404 response', function(done){
+        xit('should return 404 response', function(done){
           request(app)
             .get('/event/25/images/88')
             .expect(404, done);
@@ -160,7 +160,7 @@ describe('event', function() {
 
       describe('GET /event/:eventId/image', function() {
 
-        it('should return 404 response', function(done){
+        xit('should return 404 response', function(done){
           request(app)
             .get('/event/25/images')
             .expect(404, done);
